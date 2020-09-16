@@ -552,8 +552,11 @@ export default {
     Submit() {
       // console.log(this.res)
     this.loading = true
+    // console.log(this.res)
+
       Submit(this.res).then(res => {
-        if(res.data) {
+        // console.log(res.data.msg)
+        if(res.data.msg == "success") {
           this.loading = false
           this.$Message.success('提交成功');
         }else {

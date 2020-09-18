@@ -15,6 +15,10 @@ import NikeMail from './MailManagement/NikeMail'
 import FinancialMail from './MailManagement/FinancialMail'
 
 
+// Nike集成应用功能
+import Twochildren from './NikeIntegratedApplication/Twochildren'
+
+
 
 Vue.use(VueRouter)
 
@@ -25,6 +29,7 @@ export const routes = [
     component: Index,
     hidden: true,
     redirect:'/index',
+
     children: [
       {
         path: 'index',
@@ -52,7 +57,8 @@ export const routes = [
         id: 3,
         title: "邮件管理系统",
         cont: [NikeMail,FinancialMail]
-      }
+      },
+      Twochildren
     }
     
   },
@@ -80,6 +86,9 @@ export const routes = [
   // 邮件管理
   NikeMail,   //Nike邮件智能管理系统
   FinancialMail,    //财务邮件管理系统
+
+  // Nike集成应用功能
+  Twochildren  //Nike集成应用功能里所有的二级路由
 ] 
 
 

@@ -34,16 +34,24 @@
                         </Submenu>
                     </Submenu> -->
                      <Submenu v-for="parent in routes" :key="parent.id" :name="parent.id">
+                         
                         <template slot="title">
                             <Icon type="ios-filing" />
                             {{parent.title}}
                         </template>
-                        <Submenu v-for="child in parent.cont" :key="child.path" :name="child.path">
-                            <template slot="title">{{child.title}}</template>
-                            <MenuItem v-for="list in child.children" :key="list.path" :name="list.path" :to="child.path + '/' + list.path">
+                        <template v-if="!parent.Grade">
+                             <Submenu v-for="child in parent.cont" :key="child.path" :name="child.path">
+                                <template slot="title">{{child.title}}</template>
+                                <MenuItem v-for="list in child.children" :key="list.path" :name="list.path" :to="child.path + '/' + list.path">
+                                    {{list.meta.title}}
+                                </MenuItem>
+                            </Submenu>
+                        </template>
+                        <template v-else>
+                            <MenuItem v-for="list in parent.children" :key="list.path" :name="list.path" :to="parent.path + '/' + list.path">
                                 {{list.meta.title}}
                             </MenuItem>
-                        </Submenu>
+                        </template>
                     </Submenu>
                 </Menu>
             </Sider>

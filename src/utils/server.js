@@ -3,7 +3,7 @@ import axios from 'axios'
 // 创建一个新的axios实例
 const _axios = axios.create({
   // 因为baseURL在不同的环境下不一样
-  baseURL: "http://localhost:8080",
+  baseURL: process.env.VUE_APP_BASEURL,
   timeout: 5000
 })
 

@@ -3,7 +3,7 @@
    <div class="warp-to">
       <ul class="to">
         <li class="title">
-          <h3>to</h3>
+          <h3>目标邮箱</h3>
           <a class="add" @click="add(true)">添加</a>
         </li>
         <!-- <li class="Tips">暂无条件！请添加条件</li> -->
@@ -60,6 +60,10 @@ export default {
         // to添加条件数据
         toTitle: [
           {
+            type: 'index',
+            width: 60,
+            align: 'center'
+          }, {
             title: '邮箱',
             key: 'email'
           },{

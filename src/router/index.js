@@ -2,13 +2,13 @@ import Vue from 'vue'
 import VueRouter from 'vue-router'
 import Index from '../views/index'
 
-// 运作管理
-import WaybillManagement from './OperationManagement/WaybillManagement'
-import TransportationManagement from './OperationManagement/TransportationManagement'
-import CustomerManagement from './OperationManagement/CustomerManagement'
+// // 运作管理
+// import WaybillManagement from './OperationManagement/WaybillManagement'
+// import TransportationManagement from './OperationManagement/TransportationManagement'
+// import CustomerManagement from './OperationManagement/CustomerManagement'
 
-//财务管理
-import Receivable from './financialManagement/Receivable'
+// //财务管理
+// import Receivable from './financialManagement/Receivable'
 
 //邮件管理系统
 import NikeMail from './MailManagement/NikeMail'
@@ -43,16 +43,16 @@ export const routes = [
     meta: {
 
       // 侧边栏渲染的路由及 title
-      OperationManagement: {
-        id: 1,
-        title: "运作管理",
-        cont:[ WaybillManagement,TransportationManagement,CustomerManagement]
-      },
-      financialMangement: {
-        id: 2,
-        title: "财务管理",
-        cont: [Receivable]
-      },
+      // OperationManagement: {
+      //   id: 1,
+      //   title: "运作管理",
+      //   cont:[ WaybillManagement,TransportationManagement,CustomerManagement]
+      // },
+      // financialMangement: {
+      //   id: 2,
+      //   title: "财务管理",
+      //   cont: [Receivable]
+      // },
       MailManagement: {
         id: 3,
         title: "邮件管理系统",
@@ -72,14 +72,14 @@ export const routes = [
     }
   },
   
-  //运作管理
-  WaybillManagement,   //运单管理
-  TransportationManagement,   //运输管理
-  CustomerManagement, //客服管理
+  // //运作管理
+  // WaybillManagement,   //运单管理
+  // TransportationManagement,   //运输管理
+  // CustomerManagement, //客服管理
 
 
-  //财务管理
-  Receivable,
+  // //财务管理
+  // Receivable,
 
 
 

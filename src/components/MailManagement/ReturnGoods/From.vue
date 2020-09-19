@@ -2,7 +2,7 @@
   <div class="warp-from">
       <ul class="from">
         <li class="title">
-          <h3>from</h3>
+          <h3>发件人邮箱号</h3>
            <a class="add" @click="add(true)">添加</a>
         </li>
         <!-- <li class="Tips" v-if="!res.fromFormRes.length && !fromFormFlag">暂无条件！请添加条件</li> -->
@@ -29,13 +29,11 @@
       <div class="form" v-if="fromFormFlag">
         <div class="form-box">
           <div class="cont">
-            <input type="text" class="One" v-model="fromForm.vlaOne">
-            <span>or</span>
-            <input type="text" class="Two" v-model="fromForm.vlaTwo">
-            <span>or</span>
-            <input type="text" class="Three" v-model="fromForm.vlaThree">
-            <span>or</span>
-            <input type="text" class="Four" v-model="fromForm.vlaFour">
+            <div class="email">
+              <span>邮箱：</span>
+              <input ref="emailInput" type="email" @blur="email()" v-model="fromForm.value">
+              <!-- <Input type="email" v-model="toForm.mailbox" /> -->
+            </div>
           </div>
           <div class="btn">
             <a class="preservation" @click="preservation()">保存</a>
@@ -63,30 +61,22 @@ export default {
             // 主题添加条件数据
            fromTitle: [
                 {
-                    title: '条件一',
-                    key: 'vlaOne'
-                },{
-                    title: '条件二',
-                    key: 'vlaTwo'
-                },{
-                    title: '条件三',
-                    key: 'vlaThree'
-                },{
-                    title: '条件四',
-                    key: 'vlaFour'
-                },{
-                    title: '操作',
-                    slot: 'action',
-                    width: 150,
-                    align: 'center'
+                type: 'index',
+                width: 60,
+                align: 'center'
+              },{
+                  title: '邮箱',
+                  key: 'value'
+              },{
+                  title: '操作',
+                  slot: 'action',
+                  width: 150,
+                  align: 'center'
                 }
             ],
 
            fromForm: {
-                vlaOne: '',
-                vlaTwo: '',
-                vlaThree: '',
-                vlaFour: '',
+              value: '',
             },
         }
     },
@@ -98,15 +88,19 @@ export default {
                 this.fromForm[val] = ''
             }
         },
-        //保存
+       //保存
         preservation() {
-            // console.log(this.res)
-            let obj = JSON.parse(JSON.stringify(this.fromForm)) 
-            if(this.fromEditFlag) {
-                this.res.fromFormRes[this.fromEditIndex] = obj
-                this.fromFormFlag = false
-                this.fromEditFlag = false
-            }else{
+            if(!this.fromEmailFlag) {
+                this.$refs.emailInput.style.border = "1px solid red"
+                alert("邮箱格式不正确");
+                return
+            }
+            let obj = JSON.parse(JSON.stringify(this.fromForm))
+            if(this.fromEditFlag){
+            this.res.fromFormRes[this.fromEditIndex] = obj
+            this.fromFormFlag = false
+            this.fromEditFlag = false
+            } else {
                 this.res.fromFormRes.push(obj)
                 this.fromFormFlag = false
                 this.fromEditFlag = false
@@ -127,6 +121,16 @@ export default {
             this.fromForm = this.res.fromFormRes[index]
             this.fromEditIndex = index
             this.fromEditFlag = true
+        },
+         // 邮箱失去焦点市检测
+        email() {
+            var reg = /^\w+@[a-z0-9]+\.[a-z]+$/i;
+            if(!reg.test(this.fromForm.vlaOne)){
+                alert("邮箱格式不正确");
+                this.fromEmailFlag = false
+            }else {
+                this.fromEmailFlag = true
+            }
         },
     }
 }
@@ -176,7 +180,7 @@ export default {
     /* justify-content: space-around; */
   }
   .form input {
-    width: 70px;
+    width: 200px;
   }
   .form span {
     padding: 0 10px;

@@ -7,15 +7,15 @@
         <div class="state"></div>
       </div>
     </div>
+    <!-- to部分 -->
+    <To :res="res"></To>
+    <!-- /to部分 -->
     <!-- 主题部分 -->
    <Subject :res="res"></Subject>
     <!-- /主题部分 -->
     <!-- from部分 -->
     <From :res="res"></From>
     <!-- /from部分 -->
-    <!-- to部分 -->
-    <To :res="res"></To>
-    <!-- /to部分 -->
     <!-- 目标邮件时间区间部分 -->
     <TimeInterval :res="res"></TimeInterval>
     <!-- /目标邮件时间区间部分 -->
@@ -25,19 +25,20 @@
     <footer>
       <div class="footer-btn">
         <!-- <a @click="Submit" :loading="loading">提交</a> -->
-        <Button type="primary" @click="Submit" :loading="loading">提交</Button>
-        <Button @click="modal = true">关闭</Button>
-        <Modal
+        <Button type="primary" @click="Submit" :loading="loading">启动</Button>
+        <Button @click="modal2('关闭')">关闭</Button>
+        <!-- <Modal
           v-model="modal"
           @on-ok="asyncOK"
           title="关闭">
           <p>关闭之后将不能提交邮件了！</p>
-        </Modal>
+        </Modal> -->
 
-        <Button  @click="modal2 = true">邮箱查询</Button>
+        <Button  @click="modal2('邮箱查询')">邮箱查询</Button>
         <Modal
           v-model="modal2"
-          title="邮箱查询"
+          :title="title"
+          :loading="selectLoading"
           @on-ok="select"
           @on-visible-change="aaa">
           <input ref="emailInput" type="email" v-model="email" placeholder="请输入邮箱号！" >
@@ -50,7 +51,7 @@
 
 <script>
 // 请求函数
-import {Submit, end ,state} from '@/api/MailManagement/ReturnGoods.js'
+import {Submit, end ,state,select} from '@/api/MailManagement/ReturnGoods.js'
 
 
 // 组件
@@ -69,35 +70,52 @@ export default {
         emailfunctionname: 'tuihuo',
         // 主题
         subjectFormRes: [],
-        // from
+        // from  改成 发件人邮箱号
         fromFormRes: [],
-        // to
+        // to  改成  目标邮箱
         toFormRes: [],
-        // 时间区间
+        // 时间区间  改成  邮件查询周期
         timeFormRes:[],
         // 接收结果邮箱
         resFormRes: [],
-       
+        //功能选项   start:启动   close:关闭   search:查询   activate_status:查活
+        status: ''
       },
-        
+      
       // 提交的loding
       loading: false,
       // 关闭按钮里面取消隐藏弹出来的窗口
-      modal: false,
+      // modal: false,
       // 邮箱查询按钮里面取消隐藏弹出来的窗口
+      selectLoading: true,
       modal2: false,
-      email: ''
+      email: '',
+      title: ''
 
 
     }
   },
   methods: {
+    // modal2模态宽的显示
+    
+    // 清空res里面的条件数据
+    clerat() {
+      for(let key in this.res){
+        if(key != "emailfunctionname" && key != "status"){
+          // console.log(key)
+          this.res[key] = []
+        }
+      }
+    },
     //提交
     Submit() {
       this.loading = true
+      this.res.status = "start"
       Submit({res:this.res}).then(res => {
-        console.log(res)
-        if(res.data.msg == "success") {
+        // console.log(res.data)
+        if(res.data.status == "success") {
+          // console.log(this.res)
+          this.clerat()
           this.loading = false
           this.$Message.success('提交成功');
         }else {
@@ -105,27 +123,47 @@ export default {
           this.loading = false
         }
       })
+      // .catch(err => {
+      //   // console.log(err)
+      //   if(!err) {
+      //     alert("数据请求失败")
+      //   }
+      // })
     },
 
     // 关闭确定之后回调
     asyncOK() {
-      console.log("关闭成功")
-      end({end:{end: 'end'}}).then(res =>{
+      end({res:{emailfunctionname: 'tuihuo',end: 'end'}}).then(res =>{
         console.log(res)
       })
+      console.log("关闭成功")
     },
 
     // 查活
     state() {
       console.log("当前状态为：！！！！")
-      state({select:{state: 'state'}}).then(res => {
+      state({res:{emailfunctionname: 'tuihuo',state: 'state'}}).then(res => {
         console.log(res)
       })
     },
 
     //查询
     select() {
-      console.log(this.email)
+       var reg = /^\w+@[a-z0-9]+\.[a-z]+$/i;
+        if(!reg.test(this.email)){
+          this.$refs.emailInput.style.border = "1px solid red"
+          this.$Message.error('邮箱格式错误')
+          this.selectLoading = false;
+        }else {
+          this.clerat()
+          this.res.toFormRes.push({email: this.email})
+          this.res.status = "search"
+          select({res:this.res}).then(res => {
+            console.log(res)
+            this.selectLoading = false;
+            this.$refs.emailInput.style.border = "1px solid #333"
+          })
+        }
     },
     aaa(a){
       if(!a) {

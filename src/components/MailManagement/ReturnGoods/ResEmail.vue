@@ -75,6 +75,7 @@ export default {
         //添加
         add(flag) {
             this.resFormFlag = flag
+            this.resEditFlag = false
              for(var val in this.resForm){
                 this.resForm[val] = ''
             }

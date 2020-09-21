@@ -6,8 +6,8 @@ export default {
 
     path: "/NikeIntegratedApplication",
     component: Index,
-    title:"Nike集成应用功能",
-    Grade: true,
+    title:"集成应用功能",
+    // Grade: true,
     id: "4",
     children: [
         {

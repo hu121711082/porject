@@ -1,7 +1,7 @@
 <template>
   <div class="box">
     <div class="title">
-      <h2>转货邮件处理功能</h2>
+      <h2>暂存邮件处理功能</h2>
       <div class="state-box">
         <Button @click="modal2('查活')">查活</Button>
         <div class="state" ref="state"></div>
@@ -17,7 +17,7 @@
     <From :res="res"></From>
     <!-- /from部分 -->
     <!-- 目标邮件时间区间部分 -->
-    <TimeInterval :res="res"></TimeInterval>
+    <!-- <TimeInterval :res="res"></TimeInterval> -->
     <!-- /目标邮件时间区间部分 -->
     <!-- 接收结果邮箱部分 -->
     <ResEmail :res="res"></ResEmail>
@@ -71,7 +71,7 @@ export default {
       // 结果
       res: {
         //功能名称
-        emailfunctionname: "zhuanhuo",
+        emailfunctionname: "zancun",
         // 主题
         subjectFormRes: [],
         // from  改成 发件人邮箱号

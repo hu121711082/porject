@@ -87,6 +87,7 @@ export default {
         //添加
         add(flag) {
             this.toFormFlag = flag
+            this.toEditFlag = false
              for(var val in this.toForm){
                 this.toForm[val] = ''
             }
@@ -100,9 +101,9 @@ export default {
             }
             let obj = JSON.parse(JSON.stringify(this.toForm))
             if(this.toEditFlag){
-            this.res.toFormRes[this.toEditIndex] = obj
-            this.toFormFlag = false
-            this.toEditFlag = false
+              this.res.toFormRes[this.toEditIndex] = obj
+              this.toFormFlag = false
+              this.toEditFlag = false
             } else {
                 this.res.toFormRes.push(obj)
                 this.toFormFlag = false

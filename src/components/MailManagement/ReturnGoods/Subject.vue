@@ -16,7 +16,7 @@
               <a @click="subjectEdit(index)">编辑</a>
             </div>
           </div> -->
-          <Table border :columns="subjectTitle" :data="res.subjectFormRes">
+          <Table border :columns="subjectTitle" :data="subjectForm">
             <template v-slot:action="{ index}">
               <div class="table-btn">
                 <a @click="subjectRmove(index)">删除</a>
@@ -29,17 +29,25 @@
       <div class="form" v-if="subjectFormFlag">
         <div class="form-box">
           <div class="cont">
-            <input type="text" class="One" v-model="subjectForm.vlaOne">
-            <span>or</span>
-            <input type="text" class="Two" v-model="subjectForm.vlaTwo">
-            <span>or</span>
-            <input type="text" class="Three" v-model="subjectForm.vlaThree">
-            <span>and</span>
-            <input type="text" class="Four" v-model="subjectForm.vlaFour">
-            <span>and</span>
-            <input type="text" class="Five" v-model="subjectForm.vlaFive">
-            <span>and</span>
-            <input type="text" class="Six" v-model="subjectForm.vlaSix">
+            <div class="aaa">
+              <span>必 要 条 件：</span>
+              <span>①</span>
+              <input type="text" class="One" v-model="mnlt_existence.vlaOne">
+              <span>②</span>
+              <input type="text" class="Two" v-model="mnlt_existence.vlaTwo">
+              <span>③</span>
+              <input type="text" class="Three" v-model="mnlt_existence.vlaThree">
+            </div>
+            <div class="aaa">
+              <span>非必要条件：</span>
+              <span>①</span>
+              <input type="text" class="Four" v-model="mnlt_nonExistent.vlaOne">
+              <span>②</span>
+              <input type="text" class="Five" v-model="mnlt_nonExistent.vlaTwo">
+              <span>③</span>
+              <input type="text" class="Six" v-model="mnlt_nonExistent.vlaThree">
+            </div>
+            
           </div>
           <div class="btn">
             <a class="preservation" @click="preservation()">保存</a>
@@ -67,24 +75,12 @@ export default {
             // 主题添加条件数据
             subjectTitle: [
                 {
-                    title: '条件一',
-                    key: 'vlaOne'
+                    title: '必要条件',
+                    key: 'mnlt_existence' 
                 },{
-                    title: '条件二',
-                    key: 'vlaTwo'
+                    title: '非必要条件',
+                    key: 'mnlt_nonExistent'
                 },{
-                    title: '条件三',
-                    key: 'vlaThree'
-                },{
-                    title: '条件四',
-                    key: 'vlaFour'
-                },{
-                    title: '条件五',
-                    key: 'vlaFive'
-                },{
-                    title: '条件六',
-                    key: 'vlaSix'
-                }, {
                     title: '操作',
                     slot: 'action',
                     width: 150,
@@ -92,28 +88,36 @@ export default {
                 }
             ],
 
-            subjectForm:{
-                vlaOne: '',
-                vlaTwo: '',
-                vlaThree: '',
-                vlaFour: '',
-                vlaFive: '',
-                vlaSix: ''
+            mnlt_existence: {
+              vlaOne: '',
+              vlaTwo: '',
+              vlaThree: '',
             },
+            mnlt_nonExistent: {
+              vlaOne: '',
+              vlaTwo: '',
+              vlaThree: ''
+            }
         }
     },
     methods: {
         //添加
         add(flag) {
+            // console.log(this.subjectForm)
             this.subjectFormFlag = flag
-             for(var val in this.subjectForm){
-                this.subjectForm[val] = ''
+            this.subjectEditFlag = false
+            for(var val in this.mnlt_existence){
+              this.mnlt_existence[val] = ''
+            }
+            for(var val in this.mnlt_nonExistent){
+              this.mnlt_nonExistent[val] = ''
             }
         },
         //保存
         preservation() {
             // console.log(this.res)
-            let obj = JSON.parse(JSON.stringify(this.subjectForm)) 
+            // let obj = JSON.parse(JSON.stringify(this.subjectForm)) 
+            let obj = {mnlt_existence:this.mnlt_existence,mnlt_nonExistent:this.mnlt_nonExistent}
             if(this.subjectEditFlag) {
                 this.res.subjectFormRes[this.subjectEditIndex] = obj
                 this.subjectFormFlag = false
@@ -136,10 +140,28 @@ export default {
         //编辑
         subjectEdit(index){
             this.subjectFormFlag = true
-            this.subjectForm = this.res.subjectFormRes[index]
+            this.mnlt_existence = this.res.subjectFormRes[index].mnlt_existence
+            this.mnlt_nonExistent =  this.res.subjectFormRes[index].mnlt_nonExistent
             this.subjectEditIndex = index
             this.subjectEditFlag = true
         },
+    },
+    computed:{
+      subjectForm() {
+         let obj = []
+       
+        this.res.subjectFormRes.forEach(item => {
+          obj.push({mnlt_existence:
+            `① ${this.mnlt_existence.vlaOne}
+            ② ${this.mnlt_existence.vlaTwo}
+            ③ ${this.mnlt_existence.vlaThree}`
+            ,mnlt_nonExistent:
+            `① ${this.mnlt_nonExistent.vlaOne}
+            ② ${this.mnlt_nonExistent.vlaTwo}
+            ③ ${this.mnlt_nonExistent.vlaThree}`})
+        });  
+        return obj
+      }
     }
 }
 </script>
@@ -184,8 +206,12 @@ export default {
   }
   .form .cont {
     padding-bottom: 10px;
-    display: flex;
+    text-align: left;
+    /* display: flex; */
     /* justify-content: space-around; */
+  }
+  .form .cont div {
+    margin: 8px;
   }
   .form input {
     width: 70px;
@@ -207,5 +233,5 @@ export default {
   }
   .table-btn a {
     margin: 0 5px;
-  } 
+  }
 </style>

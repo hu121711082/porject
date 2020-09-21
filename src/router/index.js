@@ -55,10 +55,10 @@ export const routes = [
       // },
       MailManagement: {
         id: 3,
-        title: "邮件管理系统",
-        cont: [NikeMail,FinancialMail]
+        title: "Niek智能化办公系统",
+        cont: [NikeMail,FinancialMail,Twochildren]
       },
-      Twochildren
+      
     }
     
   },

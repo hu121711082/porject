@@ -5,11 +5,11 @@ import axios from '@/utils/server'
 //提交
 export const Submit = (params) => axios.post('/email_zhuanhuo', params)
 
-//查活
-export const state = (params) => axios.post('/email_zhuanhuo',params)
+// //查活
+// export const state = (params) => axios.post('/email_zhuanhuo',params)
 
-//关闭
-export const end = (params) => axios.post('/email_zhuanhuo',params)
+// //关闭
+// export const end = (params) => axios.post('/email_zhuanhuo',params)
 
 
 // 查询
